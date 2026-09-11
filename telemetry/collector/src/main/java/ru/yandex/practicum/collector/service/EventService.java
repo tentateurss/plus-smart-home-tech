@@ -25,7 +25,7 @@ public class EventService {
 
         kafkaEventProducer.send(KafkaTopics.SENSORS_TOPIC, event.getHubId(), avro);
 
-        log.info("Событие датчика {} успешно обработано и отправлено в Kafka", event.getId());
+        log.info("Событие датчика {} передано на отправку в Kafka", event.getId());
     }
 
     public void processHubEvent(HubEvent event) {
@@ -35,6 +35,6 @@ public class EventService {
 
         kafkaEventProducer.send(KafkaTopics.HUBS_TOPIC, event.getHubId(), avro);
 
-        log.info("Событие хаба {} успешно обработано и отправлено в Kafka", event.getHubId());
+        log.info("Событие хаба {} передано на отправку в Kafka", event.getHubId());
     }
 }
