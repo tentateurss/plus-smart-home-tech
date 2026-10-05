@@ -1,0 +1,13 @@
+spring:
+  main:
+    banner-mode: off
+    log-startup-info: false
+
+  kafka:
+    bootstrap-servers: localhost:9092
+
+logging:
+  level:
+    ru.yandex.practicum.telemetry: WARN
+    org.springframework: ERROR
+    org.apache.kafka: WARN
