@@ -11,5 +11,9 @@ spring:
         max.in.flight.requests.per.connection: 1
         retries: 3
 
+grpc:
+  server:
+    port: 59091
+
 server:
   port: 8080
