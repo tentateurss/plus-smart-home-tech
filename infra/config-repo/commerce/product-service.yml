@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: ${PRODUCT_DB_URL:jdbc:postgresql://localhost:5432/product_db}
+    username: ${PRODUCT_DB_USER:dbuser}
+    password: ${PRODUCT_DB_PASSWORD:12345}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+
+server:
+  port: 0

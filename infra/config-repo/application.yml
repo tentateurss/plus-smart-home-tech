@@ -1,0 +1,17 @@
+spring:
+  main:
+    log-startup-info: false
+
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+
+logging:
+  level:
+    ru.yandex.practicum: INFO
+    org.springframework: WARN
+    org.apache.kafka: WARN
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_DEFAULT_ZONE:http://localhost:8761/eureka/}
