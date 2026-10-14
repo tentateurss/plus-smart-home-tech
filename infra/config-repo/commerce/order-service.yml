@@ -10,5 +10,26 @@ spring:
       ddl-auto: update
     show-sql: false
 
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: false
+
 server:
   port: 0
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: basic
+      inventory-service:
+        connectTimeout: 3000
+        readTimeout: 3000
+        loggerLevel: full
+
+logging:
+  level:
+    ru.yandex.practicum.order.feign.InventoryClient: DEBUG
+    ru.yandex.practicum.order.feign.ProductClient: DEBUG
