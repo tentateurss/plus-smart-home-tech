@@ -31,6 +31,7 @@ public class OrderService {
 
     private static final String STATUS_CONFIRMED = "CONFIRMED";
     private static final String STATUS_PENDING = "PENDING_CONFIRMATION";
+    private static final int STATUS_DETAILS_MAX_LEN = 1000;
 
     private final OrderRepository orderRepository;
     private final ProductClient productClient;
@@ -174,15 +175,14 @@ public class OrderService {
 
         } catch (ProductServiceUnavailableException e) {
             log.warn("Product-service недоступен для productId={}: {}", productId, e.getMessage());
-            return new ServiceCallResult.Degraded<>(
-                    "Сервис каталога недоступен: " + e.getCause().getMessage());
+            return new ServiceCallResult.Degraded<>("Сервис каталога недоступен");
 
         } catch (FeignException.NotFound e) {
             return new ServiceCallResult.Failure<>("Товар с id=" + productId + " не найден");
 
         } catch (FeignException e) {
-            log.error("Ошибка вызова product-service для productId={}", productId, e);
-            return new ServiceCallResult.Degraded<>("Ошибка вызова сервиса каталога: " + e.getMessage());
+            log.error("Ошибка вызова product-service для productId={}, status={}", productId, e.status());
+            return new ServiceCallResult.Degraded<>("Ошибка вызова сервиса каталога, status=" + e.status());
         }
     }
 
@@ -199,8 +199,7 @@ public class OrderService {
 
         } catch (InventoryServiceUnavailableException e) {
             log.warn("Inventory-service недоступен для productId={}: {}", productId, e.getMessage());
-            return new ServiceCallResult.Degraded<>(
-                    "Сервис склада недоступен: " + e.getCause().getMessage());
+            return new ServiceCallResult.Degraded<>("Сервис склада недоступен");
 
         } catch (FeignException.NotFound e) {
             return new ServiceCallResult.Failure<>("Складская запись для товара id=" + productId + " не найдена");
@@ -209,8 +208,8 @@ public class OrderService {
             return new ServiceCallResult.Failure<>("Недостаточно товара id=" + productId + " на складе");
 
         } catch (FeignException e) {
-            log.error("Ошибка вызова inventory-service для productId={}", productId, e);
-            return new ServiceCallResult.Degraded<>("Ошибка вызова сервиса склада: " + e.getMessage());
+            log.error("Ошибка вызова inventory-service для productId={}, status={}", productId, e.status());
+            return new ServiceCallResult.Degraded<>("Ошибка вызова сервиса склада, status=" + e.status());
         }
     }
 
@@ -239,7 +238,12 @@ public class OrderService {
         if (inventoryDegraded) {
             details.add("Склад: " + inventoryReason);
         }
-        return "Заказ требует ручной проверки. " + String.join("; ", details);
+
+        String result = "Заказ требует ручной проверки. " + String.join("; ", details);
+        if (result.length() > STATUS_DETAILS_MAX_LEN) {
+            return result.substring(0, STATUS_DETAILS_MAX_LEN);
+        }
+        return result;
     }
 
     private OrderDto toDto(Order order) {
