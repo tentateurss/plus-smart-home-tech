@@ -33,6 +33,11 @@ feign:
         connectTimeout: 3000
         readTimeout: 3000
         loggerLevel: full
+      product-service:
+        connectTimeout: 3000
+        readTimeout: 3000
+        loggerLevel: basic
+        retryer: feign.Retryer$Default
 
 resilience4j:
   circuitbreaker:
