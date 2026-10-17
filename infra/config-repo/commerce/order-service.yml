@@ -46,6 +46,7 @@ resilience4j:
           - "feign.FeignException$NotFound"
           - "feign.FeignException$Conflict"
           - "feign.FeignException$BadRequest"
+          - "feign.RetryableException"
   timelimiter:
     configs:
       default:
