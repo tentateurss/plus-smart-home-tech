@@ -12,3 +12,11 @@ spring:
 
 server:
   port: 0
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${random.value}
+    prefer-ip-address: true
+    non-secure-port: ${server.port}
+    non-secure-port-enabled: true
+    hostname: ${HOSTNAME:localhost}
