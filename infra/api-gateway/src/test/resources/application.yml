@@ -1,0 +1,10 @@
+spring:
+  config:
+    import: "optional:configserver:"
+  cloud:
+    config:
+      enabled: false
+    discovery:
+      enabled: false
+  main:
+    allow-bean-definition-overriding: true
